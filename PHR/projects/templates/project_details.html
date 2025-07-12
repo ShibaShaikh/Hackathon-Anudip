@@ -1,0 +1,37 @@
+<!-- Project drilldown: each project details: and report download option -->
+
+{% extends "profile.html" %}
+{% load static %}
+
+{% block css %} 
+    <link rel="stylesheet" type="text/css" href="{% static 'css/projectbatch_listdetail.css' %}">
+{% endblock %}
+
+{% block profile_content %}
+
+    <div>
+        <h2> {{ project.name }} </h2>
+        <p>
+            Created by user (PMO name): {{ project.created_by }} <br>
+            Description: {{ project.description }} <br>
+            Start Date: {{ project.start_date }} <br>
+            End Date: {{ project.end_date }} <br>
+            Total target: {{ project.total_target }} <br>
+            Allocated targets: 
+                {% if allocations %}
+                    <ul>
+                        {% for alloc in allocations %}
+                            <li>{{ alloc.vertex }} - {{ alloc.target }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No vertex allocations for this project.</p>
+                {% endif %}
+                
+                {% if user.role == 'vp' or user.role == 'rm' %}
+                    <button>Allocate now</button>
+                {% endif %}
+        </p>
+    </div>
+
+{% endblock %}

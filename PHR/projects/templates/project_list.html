@@ -1,0 +1,31 @@
+<!--All projects (table view)-->
+
+{% extends "profile.html" %}
+{% load static %}
+
+{% block css %} 
+    <link rel="stylesheet" type="text/css" href="{% static 'css/projectbatch_listdetail.css' %}">
+{% endblock %}
+
+{% block profile_content %}
+
+    <h2>All Projects</h2>
+
+    {% if projects %}
+
+        {% for proj in projects %}
+            <div>
+                <h3><a href="{% url 'n_projectdetails' proj.id %}">{{ proj.name }}</a></h3>
+                <p>Start Date: {{ proj.start_date }} <br>
+                End Date: {{ proj.end_date }}
+                </p>
+            </div>
+        {% endfor %}
+
+    {% else %}
+        <p>No projects available.</p>
+    {% endif %}
+
+    {# done in views file: rm and cm should see project detials according to the allocations they receive from vp and rm respectively #}
+
+{% endblock %}
