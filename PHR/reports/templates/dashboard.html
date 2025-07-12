@@ -1,0 +1,57 @@
+<!-- for creating report layout: each differently
+
+Generates reports: Target vs Achievement with filters and export functionality.
+Key Functions:
+    Aggregate data from allocations + batches
+    Filters: project, quarter, center, RM, vertex
+    Export options: CSV, PDF
+views.py:
+    Report View (dynamic filters)
+    Export CSV/PDF
+Report Types to Implement:
+    Project Wise
+    RM Wise
+    Center Wise
+    Batch Wise
+    Quarter Wise
+-->
+{% extends "profile.html" %}
+{% load static %}
+
+{% block css %} 
+    <link rel="stylesheet" type="text/css" href="{% static 'css\dashboard.css' %}">
+{% endblock %}
+
+{% block profile_content %}
+<div class="top-bar">
+  <div class="button-group">
+    <button class="btn btn-csv">Export CSV</button>
+    <button class="btn btn-pdf">Download PDF</button>
+  </div>
+</div>
+<h2>Project Details</h2>
+
+    <table class="project-table">
+        <thead>
+            <tr>
+                <th>Project Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Total Target</th>
+                <th  colspan="5">Allocated Targets</th>
+            </tr>
+            <tr>
+            <th colspan="5"></th>
+            <th>Diya</th>
+            <th>Deep Tech</th>
+            <th>SAVE</th>
+            <th>BEST</th>
+        </tr>
+        </thead>
+        <tbody>
+                              
+               
+        </tbody>
+    </table>
+{# report page pr navbar wale options ko arrow dikhra h = rupali fix it #}
+{% endblock %}
