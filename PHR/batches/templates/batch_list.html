@@ -1,0 +1,29 @@
+{% extends "profile.html" %}
+{% load static %}
+
+{% block css %} 
+    <link rel="stylesheet" type="text/css" href="{% static 'css/projectbatch_listdetail.css' %}">
+{% endblock %}
+
+{% block profile_content %}
+
+    <h2>All Batches</h2>
+
+    {% if batches %}
+
+        {% for bt in batches %}
+
+            <div>
+                <h3><a href="{% url 'n_batchdetails' bt.id %}">{{ bt.name }}</a></h3>
+                <p>Project: {{ bt.project.name }} <br>
+                    Quarter: {{ bt.quarter }}
+                </p>
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+        <p>No batches available.</p>
+    {% endif %}
+
+{% endblock %}

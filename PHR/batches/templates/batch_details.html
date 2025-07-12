@@ -1,0 +1,67 @@
+<!-- Detailed batch info, enrollment entry
+ Project drilldown: each project details: and report download option -->
+
+{% extends "profile.html" %}
+{% load static %}
+
+{% block css %} 
+    <link rel="stylesheet" type="text/css" href="{% static 'css/projectbatch_listdetail.css' %}">
+{% endblock %}
+
+{% block profile_content %}
+
+    <div>
+        <h2> {{ batch.name }} </h2>
+        <p>
+            Created by user (PMO name): {{ batch.cm_user }} <br>
+            Project: {{ batch.project.name }} <br>
+            Vertex: {{ batch.vertex  }} <br>
+            Center: {{ batch.center  }} <br>
+            Quarter: {{ batch.quarter }} <br>
+            Target: {{ batch.target  }} <br>
+            Enrollments: {{ enroll.count }}
+            
+            {% if user.role == 'cm' %}
+                <a href="?add=1" class="btn">Add Enrollments</a>
+            {% endif %}
+
+        </p> 
+    </div>
+
+    {% if show_form %}
+        <div class="enroll-form">
+            <h3>Add Student Enrollment</h3>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    {% endif %}
+
+<br>
+    <div class="enrollment-list">
+        <h3>Enrolled Students</h3>
+        {% if enroll %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Student Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for e in enroll %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ e.student_name }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No students enrolled yet.</p>
+        {% endif %}
+    </div>
+
+{% endblock %}
