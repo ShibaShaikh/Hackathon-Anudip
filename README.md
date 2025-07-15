@@ -1,7 +1,7 @@
 # Hackathon-Anudip
-###Team Members: Shiba Shaikh & Rupali Chavan
-###Technologies used: HTML, CSS, JS, Python- Django  
-###Requirements:
+### Team Members: Shiba Shaikh & Rupali Chavan
+### Technologies used: HTML, CSS, JS, Python- Django  
+### Requirements:
 1. Django
 2. xhtml2pdf
 ###Run Command:
