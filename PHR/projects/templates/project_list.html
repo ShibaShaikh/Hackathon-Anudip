@@ -11,20 +11,32 @@
 
     <h2>All Projects</h2>
 
-    {% if projects %}
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Project Name</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for proj in projects %}
+                <tr>
+                    <td><a href="{% url 'n_projectdetails' proj.id %}">{{ proj.name }}</a></td>
+                    <td>{{ proj.start_date|date:"M j, Y" }}</td>
+                    <td>{{ proj.end_date|date:"M j, Y" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">No projects available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-        {% for proj in projects %}
-            <div>
-                <h3><a href="{% url 'n_projectdetails' proj.id %}">{{ proj.name }}</a></h3>
-                <p>Start Date: {{ proj.start_date }} <br>
-                End Date: {{ proj.end_date }}
-                </p>
-            </div>
-        {% endfor %}
-
-    {% else %}
-        <p>No projects available.</p>
-    {% endif %}
+   
 
     {# done in views file: rm and cm should see project detials according to the allocations they receive from vp and rm respectively #}
 
