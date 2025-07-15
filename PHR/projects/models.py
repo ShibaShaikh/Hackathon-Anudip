@@ -15,6 +15,9 @@ class CreateProject(models.Model):
     end_date = models.DateField()
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     
+    def __str__(self):
+        return self.name  # this makes the dropdown show project names
+    
     
 class VertexAllocation(models.Model):
     VERTEX_CHOICES = [
