@@ -26,7 +26,7 @@ class AssignCenterForm(forms.ModelForm):
 class BatchForm(forms.ModelForm):
     class Meta:
         model = CreateBatch
-        fields = ['name', 'project', 'vertex', 'center', 'quarter', 'target']
+        fields = ['name', 'project', 'vertex', 'quarter', 'target']
 
 class EnrollmentForm(forms.ModelForm):
     class Meta:
