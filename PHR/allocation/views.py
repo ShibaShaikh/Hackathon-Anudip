@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-
+from .models import VpRmAllocation, RmCenterQuarterAllocation
 # Create your views here.
 from .forms import VpRmAllocationForm, RmCenterQuarterForm
 
@@ -13,7 +13,15 @@ def vp_allocates_rm(request):
     else:
         form = VpRmAllocationForm()
     
-    return render(request, 'vp.html', {'form': form})
+    all_allocations  = VpRmAllocation.objects.all()
+    has_allocations = all_allocations .exists()
+    
+
+    return render(request, 'vp.html', {
+        'vpform': form,
+        'region_assign': all_allocations ,
+        'has_allocations': has_allocations,
+    })
 
 
 # RM assigns quarter-wise target to centers
@@ -28,5 +36,12 @@ def rm_allocates_center(request):
     else:
         form = RmCenterQuarterForm()
 
-    return render(request, 'rm.html', {'form': form})
+    my_allocations = RmCenterQuarterAllocation.objects.filter(rm_user=request.user)
+    has_allocations = my_allocations.exists()
+
+    return render(request, 'rm.html', {
+        'rmform': form,
+        'center_assign': my_allocations,
+        'has_allocations': has_allocations,
+    })
     
