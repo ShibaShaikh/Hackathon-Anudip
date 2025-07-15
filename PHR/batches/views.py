@@ -47,6 +47,16 @@ def create_batch(request):
         if form.is_valid():
             batch = form.save(commit=False)
             batch.cm_user = request.user  # Logged-in CM
+            
+            # Get center from AssignCenter model
+            try:
+                assign_center = AssignCenter.objects.get(cm_user=request.user)
+                batch.center = assign_center.center
+            except AssignCenter.DoesNotExist:
+                # Optional: handle case where CM has no assigned center
+                form.add_error(None, "You don't have a center assigned.")
+                return render(request, 'create_batch.html', {'form': form})
+            
             batch.save()
             return redirect('n_create_batch')
     else:
@@ -69,7 +79,7 @@ def enroll_student(request):
 
 
 def batch_list(request):
-    batches = CreateBatch.objects.all().order_by('-start_date')  # newest first
+    batches = CreateBatch.objects.all().order_by('-id')  # newest first
     return render(request, 'batch_list.html', {'batches': batches})
 
 
@@ -88,7 +98,7 @@ def batch_details(request, pk):
             enrollment = form.save(commit=False)
             enrollment.batch = batch  # Assign batch manually
             enrollment.save()
-            return redirect('batch_detail', pk=batch.pk)  # reload page
+            return redirect('n_batchdetails', pk=batch.pk)  # reload page
 
         show_form = True  # if form invalid, still show form
 
@@ -96,9 +106,11 @@ def batch_details(request, pk):
     if request.GET.get('add') == '1' and request.user.role == 'cm':
         show_form = True
 
-    return render(request, 'project_details.html', {
+    return render(request, 'batch_details.html', {
         'batch': batch,
         'enroll': enroll,
         'form': form,
         'show_form': show_form
     })
+
+
