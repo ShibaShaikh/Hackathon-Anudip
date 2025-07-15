@@ -84,9 +84,41 @@ from django.shortcuts import get_object_or_404
 @login_required
 def project_details(request, pk):  # Accept pk from URL (proj id assign h url me isliye pk add karn pada)
     project = get_object_or_404(CreateProject, pk=pk)
-    allocations = VertexAllocation.objects.filter(project=project)
-    return render(request, 'project_details.html', {'project': project, 'allocations': allocations})
+    user = request.user
+    allocations = []
+    quarter_allocations = []
+    vertex_allocations = []
 
+    if user.role == 'vp':
+        allocations = VpRmAllocation.objects.filter(project=project)
+
+    elif user.role == 'rm':
+        allocations = VpRmAllocation.objects.filter(project=project, rm_user=user)
+        
+    elif user.role == 'pmo':
+        vertex_allocations = VertexAllocation.objects.filter(project=project)
+
+    elif user.role == 'cm':
+      try:
+            assigned_center = AssignCenter.objects.get(cm_user=user)
+            quarter_allocations = RmCenterQuarterAllocation.objects.filter(
+            project=project,
+            center=assigned_center
+          )
+      except AssignCenter.DoesNotExist:
+            quarter_allocations = []
+
+    else:
+        allocations = []
+
+    return render(request, 'project_details.html', {
+        'project': project, 'vertex_allocations': vertex_allocations,
+        'allocations': allocations, 'quarter_allocations': quarter_allocations
+    })
+
+
+from allocation.models import VpRmAllocation, RmCenterQuarterAllocation
+from batches.models import CreateBatch, AssignCenter
 
 @login_required
 def project_list(request):
@@ -101,10 +133,14 @@ def project_list(request):
     projects = CreateProject.objects.filter(id__in=rm_allocations.values('project'))
 
   elif user.role == 'cm':
-    # Projects where CM has created batches
-    batch_projects = CreateBatch.objects.filter(cm_user=user).values_list('project', flat=True).distinct()
-    projects = CreateProject.objects.filter(id__in=batch_projects)
-
+    try:
+        center_obj = AssignCenter.objects.get(cm_user=user)
+        allocated_projects = RmCenterQuarterAllocation.objects.filter(
+            center=center_obj
+        ).values_list('project', flat=True).distinct()
+        projects = CreateProject.objects.filter(id__in=allocated_projects)
+    except AssignCenter.DoesNotExist:
+        projects = []
   else:
     projects = []  # no projects for other roles
 
