@@ -58,4 +58,6 @@ class AssignCenter(models.Model):
     cm_user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.center} → {self.cm_user}"
+        return f"{self.get_center_display()}"
+    
+    
