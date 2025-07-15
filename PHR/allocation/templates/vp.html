@@ -13,12 +13,12 @@
 
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ vpform.as_p }}
         <button type="submit">Assign Target</button>
     </form>
     <br>
     <h3>Existing Allocations</h3>
-    {% if form.instance._meta.model.objects.exists %}
+    {% if  has_allocations %}
         <table>
             <thead>
                 <tr>
@@ -29,7 +29,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for alloc in form.instance._meta.model.objects.all %}
+                {% for alloc in region_assign   %}
                 <tr>
                     <td>{{ alloc.project.name }}</td>
                     <td>{{ alloc.vertex }}</td>
@@ -44,3 +44,4 @@
     {% endif %}
 
 {% endblock %} 
+
