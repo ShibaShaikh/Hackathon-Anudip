@@ -7,23 +7,28 @@
 
 {% block profile_content %}
 
-    <h2>All Batches</h2>
-
+    <h2 class="table-title">All Batches</h2>
     {% if batches %}
-
-        {% for bt in batches %}
-
-            <div>
-                <h3><a href="{% url 'n_batchdetails' bt.id %}">{{ bt.name }}</a></h3>
-                <p>Project: {{ bt.project.name }} <br>
-                    Quarter: {{ bt.quarter }}
-                </p>
-            </div>
-
-        {% endfor %}
-
+        <table class="batch-table">
+            <thead>
+                <tr>
+                    <th>Batch Name</th>
+                    <th>Project</th>
+                    <th>Quarter</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bt in batches %}
+                    <tr>
+                        <td><a href="{% url 'n_batchdetails' bt.id %}" class="batch-link">{{ bt.name }}</a></td>
+                        <td>{{ bt.project.name }}</td>
+                        <td>{{ bt.quarter }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     {% else %}
-        <p>No batches available.</p>
+        <p class="no-data">No batches available.</p>
     {% endif %}
 
 {% endblock %}
