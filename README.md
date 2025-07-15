@@ -1,6 +1,7 @@
 # Hackathon-Anudip
 Requirements:
 1. Django
+2. xhtml2pdf
 # Run Command:
 1. open folder location in terminal
 2. py manage.py makemigrations   -- to create models
